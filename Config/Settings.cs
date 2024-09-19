@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using BepInEx.Configuration;
+using DynamicMaps.UI.Controls;
 using UnityEngine;
 
 // THIS IS HEAVILY BASED ON DRAKIAXYZ'S SPT-QuickMoveToContainer
@@ -24,6 +25,17 @@ namespace DynamicMaps.Config
 
         public static ConfigEntry<KeyboardShortcut> ChangeMapLevelUpHotkey;
         public static ConfigEntry<KeyboardShortcut> ChangeMapLevelDownHotkey;
+
+        public static ConfigEntry<KeyboardShortcut> MiniMapKey;
+        public static ConfigEntry<KeyboardShortcut> MiniMapZoomIn;
+        public static ConfigEntry<KeyboardShortcut> MiniMapZoomOut;
+        public static ConfigEntry<float> MiniMapZoom;
+        public static ConfigEntry<Vector2> MiniMapAnchoredPosition;
+        public static ConfigEntry<Vector2> MiniMapSizeDelta;
+        public static ConfigEntry<Vector2> MiniMapAnchorMin;
+        public static ConfigEntry<Vector2> MiniMapAnchorMax;
+        public static ConfigEntry<Vector2> MiniMapPivot;
+        public static ConfigEntry<Vector2> MiniMapLevelSliderPositionOffset;
 
         public static ConfigEntry<KeyboardShortcut> ZoomMapInHotkey;
         public static ConfigEntry<KeyboardShortcut> ZoomMapOutHotkey;
@@ -162,10 +174,101 @@ namespace DynamicMaps.Config
                     null,
                     new ConfigurationManagerAttributes { })));
 
+            ConfigEntries.Add(MiniMapSizeDelta = Config.Bind(
+     GeneralTitle,
+     "Zoom Map size",
+     new Vector2(200f, 200f),
+     new ConfigDescription(
+         "The size of the mini map",
+         null,
+         new ConfigurationManagerAttributes { })));
+
+            ConfigEntries.Add(MiniMapAnchoredPosition = Config.Bind(
+                GeneralTitle,
+                "Mini Map position",
+                new Vector2(-10f, -10f),
+                new ConfigDescription(
+                    "The position of the mini map",
+                    null,
+                    new ConfigurationManagerAttributes { })));
+
+            ConfigEntries.Add(MiniMapAnchorMin = Config.Bind(
+                GeneralTitle,
+                "Mini Map anchor min",
+                new Vector2(1f, 1f),
+                new ConfigDescription(
+                    "The min anchor of the mini map",
+                    null,
+                    new ConfigurationManagerAttributes { })));
+
+            ConfigEntries.Add(MiniMapAnchorMax = Config.Bind(
+                GeneralTitle,
+                "Mini Map anchor max",
+                new Vector2(1f, 1f),
+                new ConfigDescription(
+                    "The max anchor of the mini map",
+                    null,
+                    new ConfigurationManagerAttributes { })));
+
+            ConfigEntries.Add(MiniMapPivot = Config.Bind(
+                GeneralTitle,
+                "Mini Map Pivot",
+                new Vector2(1f, 1f),
+                new ConfigDescription(
+                    "The pivot of the mini map",
+                    null,
+                    new ConfigurationManagerAttributes { })));
+
+
+            ConfigEntries.Add(MiniMapZoom = Config.Bind(
+                GeneralTitle,
+                "Mini Map Zoom",
+                10f,
+                new ConfigDescription(
+                    "The zoom of the mini map",
+                    new AcceptableValueRange<float>(1f, 15f),
+                    new ConfigurationManagerAttributes { })));
+
+            ConfigEntries.Add(MiniMapKey = Config.Bind(
+                GeneralTitle,
+                "Mini Map Hotkey",
+                new KeyboardShortcut(KeyCode.End),
+                new ConfigDescription(
+                    "Active/disable the mini-map.",
+                    null,
+                    new ConfigurationManagerAttributes { })));
+
+            ConfigEntries.Add(MiniMapZoomIn = Config.Bind(
+                GeneralTitle,
+                "Mini Map Zoom In Hotkey",
+                new KeyboardShortcut(KeyCode.Keypad8),
+                new ConfigDescription(
+                    "Zoom in the mini-map.",
+                    null,
+                    new ConfigurationManagerAttributes { })));
+
+            ConfigEntries.Add(MiniMapZoomOut = Config.Bind(
+                GeneralTitle,
+                "Mini Map Zoom Out Hotkey",
+                new KeyboardShortcut(KeyCode.Keypad5),
+                new ConfigDescription(
+                    "Zoom out the mini-map.",
+                    null,
+                    new ConfigurationManagerAttributes { })));
+
+            ConfigEntries.Add(MiniMapLevelSliderPositionOffset = Config.Bind(
+                GeneralTitle,
+                "Mini Map Level Slider Position Offset",
+                new Vector2(-10f, 0f),
+                new ConfigDescription(
+                    "Move the position of level slider of the mini map",
+                    null,
+                    new ConfigurationManagerAttributes { })));
+
             ConfigEntries.Add(ZoomMapOutHotkey = Config.Bind(
                 GeneralTitle,
                 "Zoom Map Out Hotkey",
-                new KeyboardShortcut(KeyCode.Minus),
+                new KeyboardShortcut(KeyCode.KeypadMinus),
                 new ConfigDescription(
                     "Hotkey to zoom the map out (scroll-down also does this in map screen)",
                     null,
