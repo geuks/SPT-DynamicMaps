@@ -20,9 +20,10 @@ namespace DynamicMaps.DynamicMarkers
         private const string _friendlyPlayerImagePath = _arrowImagePath;
         private static Color _friendlyPlayerColor = Color.Lerp(Color.blue, Color.white, 0.5f);
 
+        private const string _enemyPlayerPMCImagePath = "Markers/arrow_pmc.png";
         private const string _enemyPlayerCategory = "Enemy Player";
-        private const string _enemyPlayerImagePath = _arrowImagePath;
-        private static Color _enemyPlayerColor = Color.red;
+        private static Color _enemyPlayerUSECColor = Color.magenta;
+        private static Color _enemyPlayerBEARColor = Color.red;
 
         private const string _scavCategory = "Scav";
         private const string _scavImagePath = _arrowImagePath;
@@ -242,8 +243,8 @@ namespace DynamicMaps.DynamicMarkers
             else if (player.IsPMC())
             {
                 category = _enemyPlayerCategory;
-                imagePath = _enemyPlayerImagePath;
-                color = _enemyPlayerColor;
+                imagePath = _enemyPlayerPMCImagePath;
+                color = player.Profile.Side == EPlayerSide.Usec ? _enemyPlayerUSECColor : _enemyPlayerBEARColor;
             }
 
             if (!ShouldShowCategory(category))
