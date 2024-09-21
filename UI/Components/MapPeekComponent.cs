@@ -67,7 +67,7 @@ namespace DynamicMaps.UI.Components
             }
             MapScreen.WasMinimapActive = MapScreen.IsMinimapActive;
 
-            if (MapScreen.IsMinimapActive)
+            if (MapScreen.IsMinimapActive && MapScreen.MiniMapComponent != null)
             {
                 MapScreen.MiniMapComponent.EndMiniMap();
             }
@@ -95,7 +95,7 @@ namespace DynamicMaps.UI.Components
             MapScreen.Hide();
             MapScreen.transform.SetParent(MapScreenTrueParent);
 
-            if (MapScreen.WasMinimapActive)
+            if (MapScreen.WasMinimapActive && MapScreen.MiniMapComponent != null)
             {
                 MapScreen.MiniMapComponent.BeginMiniMap();
             }

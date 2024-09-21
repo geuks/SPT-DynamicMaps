@@ -235,17 +235,7 @@ namespace DynamicMaps.UI
                 _mapView.IncrementalZoomInto(zoomDelta, currentCenter, 0f);
             }
 
-            if (IsMinimapActive)
-            {
-                var player = GameUtils.GetMainPlayer();
-                if (player != null)
-                {
-                    var mapPosition = MathUtils.ConvertToMapPosition(player.Position);
-                    _mapView.ShiftMapToCoordinate(mapPosition, _positionTweenTime);
-                }
-            }
-
-            if (_centerPlayerShortcut.BetterIsDown())
+            if (_centerPlayerShortcut.BetterIsDown() || IsMinimapActive)
             {
                 var player = GameUtils.GetMainPlayer();
                 if (player != null)
@@ -271,11 +261,17 @@ namespace DynamicMaps.UI
 
         internal void OnMapScreenShow()
         {
-            PeekComponent?.EndPeek();
+            if(PeekComponent != null)
+            {
+                PeekComponent.EndPeek();
+            }
 
             if (WasMinimapActive)
             {
-                MiniMapComponent.EndMiniMap();
+                if(MiniMapComponent != null)
+                {
+                    MiniMapComponent.EndMiniMap();
+                }
             }
 
             transform.parent.Find("MapBlock").gameObject.SetActive(false);
@@ -290,7 +286,10 @@ namespace DynamicMaps.UI
             Hide();
             if (WasMinimapActive)
             {
-                MiniMapComponent.BeginMiniMap();
+                if(MiniMapComponent != null)
+                {
+                    MiniMapComponent.BeginMiniMap();
+                }
             }
         }
 
@@ -387,13 +386,19 @@ namespace DynamicMaps.UI
             }
 
             // reset peek and remove reference, it will be destroyed very shortly with parent object
-            PeekComponent?.EndPeek();
-            Destroy(PeekComponent.gameObject);
-            PeekComponent = null;
+            if(PeekComponent != null)
+            {
+                PeekComponent.EndPeek();
+                Destroy(PeekComponent.gameObject);
+                PeekComponent = null;
+            }
 
-            MiniMapComponent?.EndMiniMap();
-            Destroy(MiniMapComponent.gameObject);
-            MiniMapComponent = null;
+            if (MiniMapComponent != null)
+            {
+                MiniMapComponent.EndMiniMap();
+                Destroy(MiniMapComponent.gameObject);
+                MiniMapComponent = null;
+            }
 
             // unload map completely when raid ends, since we've removed markers
             _mapView.UnloadMap();
@@ -455,7 +460,7 @@ namespace DynamicMaps.UI
             _scrollMask.GetRectTransform().anchoredPosition = Vector2.zero;
             _scrollMask.GetRectTransform().sizeDelta = RectTransform.sizeDelta;
 
-            _mapView.SetMapZoom(Settings.MiniMapZoom.Value, .5f);
+            _mapView.SetMapZoom(_mainMapZoom, .5f);
 
             _levelSelectSlider.gameObject.SetActive(true);
             _cursorPositionText.gameObject.SetActive(false);
@@ -470,8 +475,7 @@ namespace DynamicMaps.UI
             _scrollMask.GetRectTransform().anchorMax = Settings.MiniMapAnchorMax.Value;
             _scrollMask.GetRectTransform().pivot = Settings.MiniMapPivot.Value;
 
-            _mapView.SetMapZoom(_mainMapZoom, .5f);
-
+            _mapView.SetMapZoom(Settings.MiniMapZoom.Value, .5f);
 
             _levelSelectSlider.gameObject.SetActive(false);
             _cursorPositionText.gameObject.SetActive(false);
@@ -668,6 +672,7 @@ namespace DynamicMaps.UI
                 {
                     _scrollMask.GetRectTransform().anchoredPosition = Settings.MiniMapAnchoredPosition.Value;
                     _scrollMask.GetRectTransform().sizeDelta = Settings.MiniMapSizeDelta.Value;
+
                     _mapView.SetMapZoom(Settings.MiniMapZoom.Value, .5f);
                 }
             }

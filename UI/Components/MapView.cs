@@ -286,8 +286,10 @@ namespace DynamicMaps.UI.Components
         {
             // set zoom min and max based on size of map and size of mask
             var mapSize = RectTransform.sizeDelta;
-            ZoomMin = Mathf.Min(parentTransform.sizeDelta.x / mapSize.x, parentTransform.sizeDelta.y / mapSize.y) / _zoomMinScaler;
-            ZoomMax = _zoomMaxScaler * ZoomMin;
+            var parentSize = parentTransform.sizeDelta;
+
+            ZoomMin = Mathf.Min(parentSize.x / mapSize.x, parentSize.y / mapSize.y) / _zoomMinScaler;
+            ZoomMax = Mathf.Max(_zoomMaxScaler * ZoomMin, 1.0f);
 
             // this will set everything up for initial zoom
             SetMapZoom(ZoomMin, 0);
